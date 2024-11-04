@@ -23,9 +23,9 @@ Gaussian mixture Models: A Bayesian approach" using parameters, sample sizes and
 Suppose $$\xi \sim \mathcal{N}\left(\begin{pmatrix}	0 \\ C \end{pmatrix},\begin{bmatrix} 1 & 0 \\ 0& 1 \end{bmatrix}\right), $$
 where the y coordinate $C \in [-1,1]$ is such that $\frac{C+1}{2}$ has, for some $\delta>0$, the Beta($\delta,\delta$) distribution, i.e. the density of random variable $C$ is $\frac{\Gamma(2\delta)}{2^{2\delta-1}\Gamma(\delta)^2}(1-c^2)^{\delta-1}$ for $c\in [-1,1]$. The chance constraint $g:\mathbb{R} \times \mathbb{R}^2$ is given by 
 $$g(x,\xi)=||\xi||^2-x^2-2.$$
-It is clear that $g(x,(0,c)^\top) \leq 0 \iff r\leq \rho_c(x,v)=cv_2+\sqrt{x^2+2-c^2v_1^2}$. The radial probability function and its gradient are given by 
+It is clear that $g(x,(0,c)^\top) \leq 0 \iff r\leq \rho_c(x,v)=-cv_2+\sqrt{x^2+2-c^2v_1^2}$. The radial probability function and its gradient are given by 
 $$e_c(x,v)= \int_0^{\rho_c(x,v)}re^{-r^2/2}dt=1-e^{-\rho_c(x,v)^2/2},$$ and 
-$$\nabla_x e_c(x,v)= \rho_c(x,v)e^{-\rho_c(x,v)^2/2}\frac{2x}{\sqrt{x^2+2-c^2v_1^2}}.$$
+$$\nabla_x e_c(x,v)= \rho_c(x,v)e^{-\rho_c(x,v)^2/2}\frac{x}{\sqrt{x^2+2-c^2v_1^2}}.$$
 
 The probability function and its gradient are given by
 
@@ -67,7 +67,7 @@ x<-seq(xlow,xup, length.out=xvalues)
 rs<-sqrt(sample(rchisq(N,2)))
 xisq<-rs^2 + c^2+2*rs*c*sin(v)
 for(i in 1:xvalues){
-  rcrit<-c*sin(v)+sqrt(x[i]^2+2 -c^2*cos(v)^2)
+  rcrit<- -c*sin(v)+sqrt(x[i]^2+2 -c^2*cos(v)^2)
   estradial[i]<-mean(1-exp(-rcrit^2/2))
   estgradient[i]<-2*x[i]*mean(rcrit*exp(-rcrit^2/2)/sqrt(x[i]+2 -c^2*cos(v)^2))
   estprop[i]<-sum(xisq < 2+x[i]^2)/N
